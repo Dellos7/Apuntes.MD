@@ -1,0 +1,17 @@
+page-home {
+
+    ion-content {
+        -moz-user-select: text;
+        -khtml-user-select: text;
+        -webkit-user-select: text;
+        -ms-user-select: text;
+        user-select: text;
+    }
+
+    textarea {
+        max-width: 100%;
+        width: 100%;
+        height: 100vh;
+    }
+
+}
