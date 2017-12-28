@@ -8,10 +8,26 @@ page-home {
         user-select: text;
     }
 
+    .format-button {
+        font-size: 2.0rem !important;
+    }
+
+    .color-red {
+        color: red;
+    }
+
     textarea {
         max-width: 100%;
         width: 100%;
-        height: 100vh;
+        //height: 100vh;
+    }
+
+    .format-bar {
+        background-color: lightblue;
+    }
+
+    .md-show {
+        position: inherit !important;
     }
 
 }

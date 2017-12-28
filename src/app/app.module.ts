@@ -1,3 +1,4 @@
+import { FaIconComponent } from './../components/fa-icon/fa-icon.component';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
@@ -22,11 +23,12 @@ import { MarkdownUtilsProvider } from '../providers/markdown-utils/markdown-util
     ContactPage,
     HomePage,
     TabsPage,
-    SafeHtmlPipe
+    SafeHtmlPipe,
+    FaIconComponent
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp, { scrollAssist: false, autoFocusAssist: false })
   ],
   bootstrap: [IonicApp],
   entryComponents: [

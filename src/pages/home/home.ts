@@ -1,9 +1,11 @@
+import { ElementRef } from '@angular/core';
 import { SelectedTextProvider } from './../../providers/selected-text/selected-text';
 import { Component, ViewChild, Input } from '@angular/core';
-import { NavController, Content } from 'ionic-angular';
+import { NavController, Content, Platform } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import marked from 'marked';
 import { MarkdownUtilsProvider } from '../../providers/markdown-utils/markdown-utils';
+import { PopoverController } from 'ionic-angular/components/popover/popover-controller';
 
 
 @Component({
@@ -12,13 +14,57 @@ import { MarkdownUtilsProvider } from '../../providers/markdown-utils/markdown-u
 })
 export class HomePage {
 
+
   toggleVal: boolean = false;
   plainText: string = '';
   content: string = '';
+  showFormat: boolean = false;
+
+  test: string = '';
+
+  taRows: number;
+
+  @ViewChild('inputTextArea') inputTextArea :ElementRef;
+  @ViewChild('item', {read: ElementRef}) item: ElementRef;
+  @ViewChild('fixedContent') fixedContent: ElementRef;
+  @ViewChild('nonFixedContent') nonFixedContent: ElementRef;
+  @ViewChild('formatBar') formatBar: ElementRef;
 
   constructor(public navCtrl: NavController, private selectedTextSvc: SelectedTextProvider,
-              private markdownUtilsSvc: MarkdownUtilsProvider) {
+              private markdownUtilsSvc: MarkdownUtilsProvider , public platform: Platform) {
+      //this.taRows = Math.floor( (this.platform.height() - itemHeight) / 25);
+      this.taRows = 27;
+    }
 
+
+  ionViewDidLoad() {
+    this.calcTaHeight();
+  }
+
+  calcTaHeight() {
+    let itemEl = this.fixedContent.nativeElement;
+    let formatBarEl = ( this.formatBar ? this.formatBar.nativeElement : null );
+    let listEl1 = this.nonFixedContent.nativeElement.parentElement;
+  
+    // Get the height of the fixed item
+    let itemHeight = itemEl.offsetHeight;
+    let formatBarHeight = ( formatBarEl ? formatBarEl.offsetHeight : 0 );
+  
+    // Set the margin top to the height of the fixed item
+    if( listEl1 ) {
+      let maxHeight = itemHeight;
+      if( formatBarHeight > maxHeight ) {
+        maxHeight = formatBarHeight;
+      }
+      listEl1.style.top = maxHeight + 5 + 'px';
+    }
+  }
+
+  showFormatFn(event) {
+    this.showFormat = event;
+    setTimeout( () => {
+      this.calcTaHeight();
+    }, 1 );
   }
 
   convert() {

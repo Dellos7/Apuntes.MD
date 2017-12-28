@@ -2,27 +2,43 @@
   <ion-navbar>
     <ion-title>Home</ion-title>
   </ion-navbar>
+  <ion-toolbar *ngIf="showFormat">
+      <ion-title>Subheader</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-    <h2>Welcome to Markdownify!</h2>
-    <ion-item>
-        <button ion-button (click)="format('it')">Italics(*)</button>
-        <button ion-button (click)="format('b')">Bold(**)</button>
-        <button ion-button (click)="format('h1')">Heading(#)</button>
-        <button ion-button color="danger" (click)="format('color-red')">Color red</button>
-    </ion-item>
-    <ion-item>
-        <button ion-button color="danger" (click)="removeFormat()">Remove format</button>
-    </ion-item>
-    <ion-item>
-      <ion-label>Convert to Markdown</ion-label>
-      <ion-toggle color="secondary" [(ngModel)]="toggleVal" (ionChange)="convert()"></ion-toggle>
-    </ion-item>
-      <ion-item [hidden]="toggleVal">
-        <ion-textarea [(ngModel)]="plainText" rows="6" placeholder="Strat writing your markdown below..."></ion-textarea>
-      </ion-item>
-      <ion-content [hidden]="!toggleVal">
-        <div [innerHtml]="content | safeHtml"></div>
-      </ion-content>
+    <ion-grid #fixedContent ion-fixed>
+        <ion-item>
+          <ion-label>Format</ion-label>
+          <ion-toggle color="secondary" [ngModel]="showFormat" (ngModelChange)="showFormatFn($event)"></ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-label>Convert to Markdown</ion-label>
+          <ion-toggle color="secondary" [(ngModel)]="toggleVal" (ionChange)="convert()"></ion-toggle>
+        </ion-item>
+    </ion-grid>
+    <ion-grid class="format-bar" [hidden]="!showFormat" ion-fixed #formatBar>
+        <ion-row>
+            <ion-col col-9>
+                <ion-col col-auto><button ion-button color="light" (click)="format('b')"><fa-icon name="bold"></fa-icon></button></ion-col>
+                <ion-col col-auto><button ion-button color="light" (click)="format('it')"><fa-icon name="italic"></fa-icon></button></ion-col>
+                <ion-col col-auto><button ion-button color="light" (click)="format('h1')">h1</button></ion-col>
+                <ion-col col-auto><button ion-button color="light" (click)="format('h2')">h2</button></ion-col>
+                <ion-col col-auto><button class="color-red" ion-button color="light" (click)="format('color-red')">T</button></ion-col>
+                <ion-col col-auto><button ion-button color="light" (click)="removeFormat()"><fa-icon name="ban"></fa-icon></button></ion-col>
+            </ion-col>
+            <ion-col col-3>
+                <button ion-button round color="dark" (click)="showFormatFn(false)" ><fa-icon name="times"></fa-icon></button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <div #nonFixedContent>
+        <ion-content class="md-show" [hidden]="!toggleVal">
+            <div [innerHtml]="content | safeHtml"></div>
+        </ion-content>
+        <ion-item [hidden]="toggleVal">
+          <ion-textarea id="inputTextArea" #inputTextArea [(ngModel)]="plainText" [attr.rows]="taRows" placeholder="Strat writing your markdown below..."></ion-textarea>
+        </ion-item>
+    </div>
 </ion-content>

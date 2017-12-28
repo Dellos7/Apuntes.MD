@@ -11,11 +11,12 @@ export class MarkdownFormat {
     replaceAfterTextRegExp: RegExp;
     cssProperty: string;
     cssValue: string;
+    applyOnlyBefore: boolean = false;
 
     constructor( id: string, mdFormat: string, name: string, description: string,
                 symbol: string, replaceBeforeTextRegExp: string, 
                 isHtmlTag?: boolean, replaceAfterTextRegExp?: string,
-                cssProperty?: string, cssValue?: string ) {
+                cssProperty?: string, cssValue?: string, applyOnlyBefore?: boolean ) {
         this.id = id;
         this.mdFormat = mdFormat;
         this.name = name;
@@ -30,6 +31,7 @@ export class MarkdownFormat {
         this.replaceAfterTextRegExp = new RegExp( _replaceAfterTextRegExp );
         this.cssProperty = cssProperty;
         this.cssValue = cssValue;
+        this.applyOnlyBefore = applyOnlyBefore;
     }
 
     stringReverse(str){
@@ -62,7 +64,7 @@ export class MarkdownFormat {
             replaceText = '<span style="' + this.cssProperty + ': ' + this.cssValue + '">' + selectedText + '</span>';
         }
         else {
-            replaceText = this.mdFormat + selectedText + this.mdFormat;
+            replaceText = this.mdFormat + selectedText + ( !this.applyOnlyBefore ? this.mdFormat : "" );
         }
         return textBeforeSelection + replaceText + textAfterSelection;
     }

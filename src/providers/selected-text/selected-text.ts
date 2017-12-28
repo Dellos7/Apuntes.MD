@@ -14,7 +14,7 @@ export class SelectedTextProvider {
   constructor() {}
 
   getTextAreaSelectedText( text:string ) {
-      let ionTextArea = window.getSelection().baseNode;
+      /*let ionTextArea = window.getSelection().baseNode || document.getSelection().baseNode;
       let ionTextAreaChildNodes = ionTextArea.childNodes;
       let textAreaChildNode;
 
@@ -23,20 +23,31 @@ export class SelectedTextProvider {
           textAreaChildNode = ionTextAreaChildNodes.item(i);
           break;
         }
-      }
+      }*/
 
-      if( textAreaChildNode ) {
-        let iSelectionStart = textAreaChildNode.selectionStart;
-        let iSelectionEnd = textAreaChildNode.selectionEnd;
-        let textAreaText = textAreaChildNode.value;
-        if( textAreaText 
-          && ( iSelectionStart != null && iSelectionStart != undefined) 
-          && ( iSelectionEnd != null && iSelectionEnd != undefined) ) {
-          let textBeforeSelection = textAreaText.substring( 0, iSelectionStart );
-          let textAfterSelection = textAreaText.substring( iSelectionEnd );
-          let selectedText = textAreaText.substring( iSelectionStart, iSelectionEnd );
-          let selectedTextObj = new SelectedText( textAreaText, selectedText, textBeforeSelection, textAfterSelection );
-          return selectedTextObj;
+      let textAreaChildNode;
+
+      let ionTextArea = document.getElementById("inputTextArea");
+      if( ionTextArea ) {
+        let textAreas = ionTextArea.getElementsByTagName("textarea");
+        if( textAreas && textAreas.length > 0 ) {
+          textAreaChildNode = textAreas.item(0);
+
+          if( textAreaChildNode ) {
+            let iSelectionStart = textAreaChildNode.selectionStart;
+            let iSelectionEnd = textAreaChildNode.selectionEnd;
+            let textAreaText = textAreaChildNode.value;
+            if( textAreaText 
+              && ( iSelectionStart != null && iSelectionStart != undefined) 
+              && ( iSelectionEnd != null && iSelectionEnd != undefined) ) {
+              let textBeforeSelection = textAreaText.substring( 0, iSelectionStart );
+              let textAfterSelection = textAreaText.substring( iSelectionEnd );
+              let selectedText = textAreaText.substring( iSelectionStart, iSelectionEnd );
+              let selectedTextObj = new SelectedText( textAreaText, selectedText, textBeforeSelection, textAfterSelection );
+              return selectedTextObj;
+            }
+          }
+
         }
       }
       return null;

@@ -15,9 +15,14 @@ export class MarkdownUtilsProvider {
 
   constructor() {
     this.markdownFormats = [
-      new MarkdownFormat( "h1", "# ", "Heading", "Heading", "#", "# (.*?)" ),
-      new MarkdownFormat( "it", "*", "Italics", "Italics", "*", "\\*(.*?)" ),
+      /*new MarkdownFormat( "h1", "# ", "Heading", "Heading", "#", "# (.*?)",
+                          false, null, null, null, true ),*/
+      new MarkdownFormat( "h2", "## ", "Heading h2", "Heading h2", "#", "\ #(?!#)",
+                          false, null, null, null, true ),
+      new MarkdownFormat( "h1", "# ", "Heading h1", "Heading h1", "#", "\ ##(?!#)",
+                          false, null, null, null, true ),
       new MarkdownFormat( "b", "**", "Bold", "Bold", "*", "\\*\\*(.*?)" ),
+      new MarkdownFormat( "it", "*", "Italics", "Italics", "*", "\\*(.*?)" ),
       new MarkdownFormat( "color-red", "", "Font color", "Font color", "red", 
                           ">(.*?)<", true, "</(.*?)>", "color", "red" ),
       new MarkdownFormat( "color-blue", "", "Font color", "Font color", "red", 
@@ -31,12 +36,13 @@ export class MarkdownUtilsProvider {
   }
 
   getTextAppliedMd( textBefore: string ) {
+    textBefore = this.stringReverse( textBefore );
     for( let mdFormat of this.markdownFormats ) {
-      if( mdFormat.isHtmlTag ) {
+      /*if( mdFormat.isHtmlTag ) {
         textBefore = this.stringReverse( textBefore );
-      }
+      }*/
       let i = textBefore.search(mdFormat.replaceBeforeTextRegExp);
-      if( i >= 0 ) {
+      if( i === 0 ) { //Buscar mejor forma de hacerlo
         return mdFormat;
       }
       else if( mdFormat.isHtmlTag ) {
