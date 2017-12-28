@@ -17,7 +17,7 @@ export class AboutPage {
     this.rows = Math.floor(this.platform.height() / 25);
   }
 
-  ionViewDidLoad() {
+  ionViewDidLoad() {//
     
   }
 
